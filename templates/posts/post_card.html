@@ -20,7 +20,6 @@
       ><i class="far fa-heart"></i></a> <label>{{ post.likes.all.count }}</label>
       <form method="POST" style="display:none;" id="form-like-{{ post.id }}" >
         {% csrf_token %}
-        <input type="hidden" name="user" value="{{ request.user.profile.pk}}" />
         <input type="hidden" name="post" value="{{ post.id }}" />
       </form>
   </p>

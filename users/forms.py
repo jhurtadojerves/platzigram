@@ -5,7 +5,7 @@ from django import forms
 
 # Models
 from django.contrib.auth.models import User
-from users.models import Profile
+from users.models import Profile, Following
 
 
 class SignupForm(forms.Form):
@@ -66,3 +66,11 @@ class UpdateProfileForm(forms.Form):
     biography = forms.CharField(max_length=500, required=False)
     phone_number = forms.CharField(max_length=20, required=False)
     picture = forms.ImageField(required=True)
+
+
+class AddFollowForm(forms.ModelForm):
+    """Form to follow other user"""
+
+    class Meta:
+        model = Following
+        fields = ('to_profile', )

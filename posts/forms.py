@@ -19,4 +19,4 @@ class LikePostForm(forms.ModelForm):
     """Form to add like"""
     class Meta:
         model = ReceivedLikes
-        fields = ('profile', 'post')
+        fields = ('post', )

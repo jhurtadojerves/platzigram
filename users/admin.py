@@ -6,7 +6,7 @@ from django.contrib import admin
 
 # Models
 from django.contrib.auth.models import User
-from users.models import Profile
+from users.models import Profile, Following
 
 
 @admin.register(Profile)
@@ -72,5 +72,11 @@ class UserAdmin(BaseUserAdmin):
     )
 
 
+class FollowingAdmin(admin.ModelAdmin):
+    """Following admin"""
+
+    list_display = ('pk', 'from_profile', 'to_profile')
+
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+admin.site.register(Following, FollowingAdmin)

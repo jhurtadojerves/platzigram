@@ -39,4 +39,9 @@ urlpatterns = [
         view=views.UserDetailView.as_view(),
         name='detail'
     ),
+    path(
+        route='<str:username>/follow',
+        view=views.CreateFollowView.as_view(),
+        name='follow'
+    ),
 ]

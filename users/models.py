@@ -24,6 +24,13 @@ class Profile(models.Model):
         null=True
     )
 
+    following = models.ManyToManyField(
+        'self',
+        through='Following',
+        symmetrical=False,
+        related_name='follower'
+    )
+
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
@@ -36,3 +43,19 @@ class Profile(models.Model):
 
     def post_by_date(self):
         return self.posts.all().order_by('-created')
+
+
+class Following(models.Model):
+    from_profile = models.ForeignKey(
+        Profile,
+        related_name='from_profile',
+        on_delete=models.CASCADE
+    )
+    to_profile = models.ForeignKey(
+        Profile,
+        related_name='to_profile',
+        on_delete=models.CASCADE
+    )
+
+    class Meta:
+        unique_together = ("from_profile", "to_profile")

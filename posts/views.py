@@ -54,15 +54,19 @@ class CreateLikeView(LoginRequiredMixin, FormView):
     def post(self, request, *args, **kwargs):
         try:
             data = request.POST
-            profile = Profile.objects.get(pk=data.get('user'))
             post = Post.objects.get(pk=data.get('post'))
-            # Post.likes.add(profile)
-            created = ReceivedLikes.objects.create(profile=profile, post=post)
+            created = ReceivedLikes.objects.create(
+                profile=request.user.profile,
+                post=post
+            )
             return JsonResponse({
                 'status': True
             })
         except IntegrityError as e:
-            ReceivedLikes.objects.get(profile=profile, post=post).delete()
+            ReceivedLikes.objects.get(
+                profile=request.user.profile,
+                post=post
+            ).delete()
             return JsonResponse({
                 'status': False,
                 'liked': True

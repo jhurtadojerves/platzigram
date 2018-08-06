@@ -1,6 +1,9 @@
 {% extends "base.html" %} {% block head_content %}
 <title>@{{ user.username }} | Platzigram</title>
-{% endblock %} {% block container %}
+<script src="/static/js/follow.js"></script>
+{% endblock %} 
+
+{% block container %}
 
 <div class="container mb-5" style="margin-top: 8em;">
   <div class="row">
@@ -9,13 +12,20 @@
     </div>
     <div class="col-sm-8">
       <h2 style="font-weight: 100;">
-        {{ user.username }} {% if request.user == user %}
+        {{ user.username }}{% if request.user == user %}
         <a href="{% url 'users:update_profile' %}" class="ml-5 btn btn-sm btn-outline-info">
           Edit profile
         </a>
         {% else %}
-        <a href="" class="ml-5 btn btn-sm btn-primary">
-          Follow
+        <a href="" 
+          class="ml-5 btn btn-sm btn-primary"
+          onclick="follow(event, '{{ user.profile.id }}', '{{ user.username }}')"
+        >
+          <strong id="textToChange">{% if following %}Following{% else %}Follow{% endif %}</strong>
+          <form method="POST" style="display:none;" id="form-follow-{{ user.profile.id }}" >
+            {% csrf_token %}
+            <input type="hidden" name="to_profile" value="{{ user.profile.id }}" />
+          </form>
         </a>
         {% endif %}
       </h2>
@@ -27,7 +37,7 @@
           <b>{{ user.profile.followers }}1,401</b> followers
         </div>
         <div class="col-sm-4">
-          <b>{{ user.profile.following }}491</b> following
+          <b>{{ user.profile.following.count }}</b> following
         </div>
       </div>
       <div class="row mt-4">
